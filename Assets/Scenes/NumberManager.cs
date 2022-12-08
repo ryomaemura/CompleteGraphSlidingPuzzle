@@ -40,7 +40,6 @@ public class NumberManager : MonoBehaviour
     int randomNumber2 = 0;
     int scoreNumber = 0;
     int emptyNumber = 5;
-    int clear = 0;
 
     // Start is called before the first frame update
     void Start() {
@@ -49,8 +48,6 @@ public class NumberManager : MonoBehaviour
         shuffleNumbers();
         setNumbers();
         scoreReload();
-
-        Invoke("solvePuzzle", 1);
     }
 
     // Update is called once per frame
@@ -69,7 +66,6 @@ public class NumberManager : MonoBehaviour
 
                 scoreNumber = scoreNumber + 1;
                 scoreReload();
-                checkAnswer();
             }
         }
 
@@ -96,7 +92,6 @@ public class NumberManager : MonoBehaviour
             numbers[randomNumber2] = temp;
         }
 
-        clear = 0;
         scoreNumber = 0;
         setEmptyNumber();
         scoreReload();
@@ -112,41 +107,5 @@ public class NumberManager : MonoBehaviour
                 emptyNumber = i;
             }
         }
-    }
-
-    public void checkAnswer() {
-        clear = 1;
-        for (int i = 0; i < numbers.Length; i++) {
-            if (numbers[i] != answerNumbers[i]) {
-                clear = 0;
-            }
-        }
-    }
-
-    public void solvePuzzle() {
-        if (numbers[emptyNumber] != answerNumbers[emptyNumber]) {
-            for (int i = 0; i < numbers.Length; i++) {
-                if (numbers[i] == answerNumbers[emptyNumber]) {
-                    clickButton(i + 1);
-                    break;
-                }
-            }
-        } else {
-            // 0 ~ numbers.Length - 1 random number
-            randomNumber1 = UnityEngine.Random.Range(0, numbers.Length);
-            while (numbers[randomNumber1] == 0 || numbers[randomNumber1] == answerNumbers[randomNumber1]) {
-                // 0 ~ numbers.Length - 1 random number
-                randomNumber1 = UnityEngine.Random.Range(0, numbers.Length);
-            }
-            clickButton(randomNumber1 + 1);
-        }
-
-        if (clear == 0) {
-            Invoke("solvePuzzle", 1);
-        }
-    }
-
-    public void resetSolvePuzzle() {
-        Invoke("solvePuzzle", 1);
     }
 }
